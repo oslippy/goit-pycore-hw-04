@@ -38,7 +38,12 @@ def show_all() -> None:
         print(f"{Fore.LIGHTYELLOW_EX}{name}: {Fore.LIGHTYELLOW_EX}{phone_number}")
 
 
-COMMANDS = {"add": add_contact, "change": change_contact, "phone": show_phone, "all": show_all}
+COMMANDS = {
+    "add": add_contact,
+    "change": change_contact,
+    "phone": show_phone,
+    "all": show_all,
+}
 
 
 def parse_input(command: str):
@@ -57,6 +62,7 @@ def parse_input(command: str):
             handler(*args)
         except TypeError as e:
             print(f"{Fore.RED}{e}")
+
 
 def main():
     print(f"{Fore.GREEN}Welcome to the assistant bot!")

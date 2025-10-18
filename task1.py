@@ -14,7 +14,9 @@ def total_salary(path: str) -> tuple[int, float] | None:
             continue
         developer, salary = line.strip().split(",")
         if not salary.isdigit():
-            print(f"Salary must be a numeric type. Salary for developer {developer} has incorrect format.")
+            print(
+                f"Salary must be a numeric type. Salary for developer {developer} has incorrect format."
+            )
             continue
         salaries.append(float(salary))
 

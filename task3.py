@@ -15,25 +15,33 @@ def visualize_directory(target_path: Path) -> None:
 
 def display_content(current_path: Path, prefix: str) -> None:
     try:
-        contents = sorted(list(current_path.iterdir()), key=lambda p: (p.is_file(), p.name))
+        contents = sorted(
+            list(current_path.iterdir()), key=lambda p: (p.is_file(), p.name)
+        )
     except PermissionError:
         print(
-            f"{Fore.LIGHTBLACK_EX}{prefix} ┗ {Fore.RED}Permission denied: {current_path.name}")
+            f"{Fore.LIGHTBLACK_EX}{prefix} ┗ {Fore.RED}Permission denied: {current_path.name}"
+        )
         return
     except Exception as e:
         print(
-            f"{Fore.LIGHTBLACK_EX}{prefix} ┗ {Fore.RED}Reading error: {current_path.name} ({e})")
+            f"{Fore.LIGHTBLACK_EX}{prefix} ┗ {Fore.RED}Reading error: {current_path.name} ({e})"
+        )
         return
 
     count_content = len(contents)
     for index, item in enumerate(contents):
-        is_last = (index == count_content - 1)
+        is_last = index == count_content - 1
         connector = "L " if is_last else "|-"
         line = f"{Fore.LIGHTBLACK_EX}{prefix}{connector}{SYMBOL_SPACE * 4}"
 
         if item.is_dir():
             print(f"{line} {Fore.BLUE} {SYMBOL_PREFIX_DIR} {item.name}")
-            new_prefix = f"{prefix}{SYMBOL_SPACE * 3}|{SYMBOL_SPACE * 2}" if not is_last else SYMBOL_SPACE * 6
+            new_prefix = (
+                f"{prefix}{SYMBOL_SPACE * 3}|{SYMBOL_SPACE * 2}"
+                if not is_last
+                else SYMBOL_SPACE * 6
+            )
             display_content(item, new_prefix)
 
         elif item.is_file():
@@ -42,7 +50,9 @@ def display_content(current_path: Path, prefix: str) -> None:
 
 def main() -> None:
     if len(sys.argv) < 2:
-        print(f"{Fore.RED}Error: You must specify the path to the directory as a command line argument.")
+        print(
+            f"{Fore.RED}Error: You must specify the path to the directory as a command line argument."
+        )
         print(f"Usage: python {Path(sys.argv[0]).name} /path/to/directory")
         sys.exit(1)
 
