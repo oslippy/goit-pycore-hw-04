@@ -3,39 +3,38 @@ from colorama import Fore
 from utils import normalize_phone
 
 
-REFERENCE_BOOK = {}
-
-
-def add_contact(name: str, phone_number: str) -> None:
-    if name not in REFERENCE_BOOK:
-        REFERENCE_BOOK[name] = normalize_phone(phone_number)
-        print("Contact added!")
+def add_contact(name: str, phone_number: str, reference_book: dict[str, str]) -> str:
+    if name not in reference_book:
+        reference_book[name] = normalize_phone(phone_number)
+        return "Contact added!"
     else:
-        print(f"{Fore.RED}'{name}' already exists in reference book.")
+        return f"{Fore.RED}'{name}' already exists in reference book."
 
 
-def change_contact(name: str, phone_number: str) -> None:
-    if name in REFERENCE_BOOK:
-        REFERENCE_BOOK[name] = normalize_phone(phone_number)
-        print("Contact changed!")
+def change_contact(name: str, phone_number: str, reference_book: dict[str, str]) -> str:
+    if name in reference_book:
+        reference_book[name] = normalize_phone(phone_number)
+        return "Contact changed!"
     else:
-        print(f"{Fore.RED}Contact '{name}' doesn't exist.")
+        return f"{Fore.RED}Contact '{name}' doesn't exist."
 
 
-def show_phone(name: str) -> None:
-    if contact := REFERENCE_BOOK.get(name):
-        print(f"{Fore.YELLOW}{contact}")
+def show_phone(name: str, reference_book: dict[str, str]) -> str:
+    if contact := reference_book.get(name):
+        return f"{Fore.LIGHTYELLOW_EX}{contact}"
     else:
-        print(f"{Fore.RED}Contact not found.")
+        return f"{Fore.RED}Contact not found."
 
 
-def show_all() -> None:
-    print(f"{Fore.YELLOW}CONTACTS:")
-    if len(REFERENCE_BOOK) == 0:
-        print(f"{Fore.BLUE}is empty...")
-        return
-    for name, phone_number in REFERENCE_BOOK.items():
-        print(f"{Fore.LIGHTYELLOW_EX}{name}: {Fore.LIGHTYELLOW_EX}{phone_number}")
+def show_all(reference_book: dict[str, str]) -> str:
+    output = f"{Fore.YELLOW}CONTACTS:\n"
+    if len(reference_book) == 0:
+        output += f"{Fore.YELLOW}is empty..."
+        return output
+
+    for name, phone_number in reference_book.items():
+        output += f"{Fore.LIGHTYELLOW_EX}{name}: {Fore.LIGHTYELLOW_EX}{phone_number}\n"
+    return output if not output.endswith("\n") else output[:-2]
 
 
 COMMANDS = {
@@ -46,29 +45,31 @@ COMMANDS = {
 }
 
 
-def parse_input(command: str):
-    command, *args = command.strip().split()
+def parse_input(user_input: str):
+    command, *args = user_input.strip().split()
     command = command.lower()
-    if command in ("exit", "close"):
-        print(f"{Fore.GREEN}Good bye!")
-        exit(0)
-    elif command == "hello":
-        print(f"{Fore.GREEN}Hello! How can I help you?")
-    elif command not in COMMANDS:
-        print(f"{Fore.RED}Invalid command.")
-    else:
-        try:
-            handler = COMMANDS.get(command)
-            handler(*args)
-        except TypeError as e:
-            print(f"{Fore.RED}{e}")
+    return command, args
 
 
 def main():
     print(f"{Fore.GREEN}Welcome to the assistant bot!")
+    reference_book = {}
     while True:
         input_command = input(f"{Fore.BLUE}Enter a command: ")
-        parse_input(input_command)
+        command, args = parse_input(input_command)
+        if command in ("exit", "close"):
+            print(f"{Fore.GREEN}Good bye!")
+            break
+        elif command == "hello":
+            print(f"{Fore.GREEN}Hello! How can I help you?")
+        elif command not in COMMANDS:
+            print(f"{Fore.RED}Invalid command.")
+        else:
+            try:
+                handler = COMMANDS.get(command)
+                print(handler(*args, reference_book=reference_book))
+            except TypeError as e:
+                print(f"{Fore.RED}{e}")
 
 
 if __name__ == "__main__":

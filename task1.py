@@ -21,4 +21,9 @@ def total_salary(path: str) -> tuple[int, float] | None:
         salaries.append(float(salary))
 
     total = sum(salaries)
-    return total, total / len(salaries)
+    try:
+        avg_salary = total / len(salaries)
+        return total, avg_salary
+    except ZeroDivisionError as e:
+        print(f"It is impossible calculate average salary. Details: {e}")
+        return None
