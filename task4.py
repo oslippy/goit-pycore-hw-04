@@ -1,20 +1,18 @@
 from colorama import Fore
 
-from utils import normalize_phone
+from utils import upsert_contact
 
 
 def add_contact(name: str, phone_number: str, reference_book: dict[str, str]) -> str:
     if name not in reference_book:
-        reference_book[name] = normalize_phone(phone_number)
-        return "Contact added!"
+        return upsert_contact(name, phone_number, reference_book, "add")
     else:
         return f"{Fore.RED}'{name}' already exists in reference book."
 
 
 def change_contact(name: str, phone_number: str, reference_book: dict[str, str]) -> str:
     if name in reference_book:
-        reference_book[name] = normalize_phone(phone_number)
-        return "Contact changed!"
+        return upsert_contact(name, phone_number, reference_book, "change")
     else:
         return f"{Fore.RED}Contact '{name}' doesn't exist."
 
@@ -34,7 +32,7 @@ def show_all(reference_book: dict[str, str]) -> str:
 
     for name, phone_number in reference_book.items():
         output += f"{Fore.LIGHTYELLOW_EX}{name}: {Fore.LIGHTYELLOW_EX}{phone_number}\n"
-    return output if not output.endswith("\n") else output[:-2]
+    return output if not output.endswith("\n") else output[:-1]
 
 
 COMMANDS = {

@@ -38,9 +38,9 @@ def display_content(current_path: Path, prefix: str) -> None:
         if item.is_dir():
             print(f"{line} {Fore.BLUE} {SYMBOL_PREFIX_DIR} {item.name}")
             new_prefix = (
-                f"{prefix}{SYMBOL_SPACE * 3}|{SYMBOL_SPACE * 2}"
+                f"{prefix}{SYMBOL_SPACE * 3}  |{SYMBOL_SPACE * 2}"
                 if not is_last
-                else f"{prefix}{SYMBOL_SPACE * 6}"
+                else f"{prefix}{SYMBOL_SPACE * 4}"
             )
             display_content(item, new_prefix)
 
