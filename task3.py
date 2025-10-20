@@ -20,12 +20,12 @@ def display_content(current_path: Path, prefix: str) -> None:
         )
     except PermissionError:
         print(
-            f"{Fore.LIGHTBLACK_EX}{prefix} ┗ {Fore.RED}Permission denied: {current_path.name}"
+            f"{Fore.LIGHTBLACK_EX}{prefix} L {Fore.RED}Permission denied: {current_path.name}"
         )
         return
     except Exception as e:
         print(
-            f"{Fore.LIGHTBLACK_EX}{prefix} ┗ {Fore.RED}Reading error: {current_path.name} ({e})"
+            f"{Fore.LIGHTBLACK_EX}{prefix} L {Fore.RED}Reading error: {current_path.name} ({e})"
         )
         return
 
@@ -40,7 +40,7 @@ def display_content(current_path: Path, prefix: str) -> None:
             new_prefix = (
                 f"{prefix}{SYMBOL_SPACE * 3}|{SYMBOL_SPACE * 2}"
                 if not is_last
-                else SYMBOL_SPACE * 6
+                else f"{prefix}{SYMBOL_SPACE * 6}"
             )
             display_content(item, new_prefix)
 
