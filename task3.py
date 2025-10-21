@@ -9,7 +9,7 @@ SYMBOL_PREFIX_FILE = "📜"
 
 def visualize_directory(target_path: Path) -> None:
     root_name = target_path.name if target_path.name else str(target_path)
-    print(f"{Fore.BLUE}📦 {root_name}")
+    print(f" {Fore.BLUE}📦 {root_name}")
     display_content(target_path, prefix="")
 
 
@@ -32,20 +32,20 @@ def display_content(current_path: Path, prefix: str) -> None:
     count_content = len(contents)
     for index, item in enumerate(contents):
         is_last = index == count_content - 1
-        connector = "L " if is_last else "|-"
-        line = f"{Fore.LIGHTBLACK_EX}{prefix}{connector}{SYMBOL_SPACE * 4}"
+        connector = " L " if is_last else " |-"
+        line = f"{Fore.LIGHTBLACK_EX}{prefix}{connector}{SYMBOL_SPACE}"
 
         if item.is_dir():
-            print(f"{line} {Fore.BLUE} {SYMBOL_PREFIX_DIR} {item.name}")
+            print(f"{line}{Fore.BLUE}{SYMBOL_PREFIX_DIR} {item.name}")
             new_prefix = (
-                f"{prefix}{SYMBOL_SPACE * 3}  |{SYMBOL_SPACE * 2}"
+                f"{prefix} |{SYMBOL_SPACE}"
                 if not is_last
-                else f"{prefix}{SYMBOL_SPACE * 4}"
+                else f"{prefix}{SYMBOL_SPACE}"
             )
             display_content(item, new_prefix)
 
         elif item.is_file():
-            print(f"{line} {Fore.GREEN} {SYMBOL_PREFIX_FILE} {item.name}")
+            print(f"{line}{Fore.GREEN}{SYMBOL_PREFIX_FILE} {item.name}")
 
 
 def main() -> None:
